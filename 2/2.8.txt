@@ -1,0 +1,83 @@
+import React, { useState } from 'react'
+
+const App = () => {
+  const [ persons, setPersons] = useState([
+    { name: 'Arto Hellas' , puh: '044430958' }
+  ]) 
+
+  const [title, setTitle] = useState({name: ''})
+  const [ newName, setNewName ] = useState('')
+  const [newPuh, setNewPuh]=useState('')
+  const handleNoteChange = (event) => {
+    event.preventDefault()
+    console.log("Uusi nimi handle: "+newName)
+    let i=0
+    let c=true
+    for(i=0;i<persons.length;i++){
+      console.log(persons[i].name +" ja indeksi "+i)
+      if(persons[i].name===newName&&persons[i].puh==newPuh){
+        console.log("IF " +persons[i].name+" ja "+newName)
+        console.log("C on true")
+        c=true
+        break;
+      }
+
+      else{
+        c=false
+       
+      }
+    }
+
+    if(c===false){
+      console.log("C on false")
+      setPersons(
+        [...persons, {name: newName, puh:newPuh}]   
+      )
+    }
+
+   
+ 
+   
+  }
+  function isSame(str1, str2){
+    if(str1===str2){
+      return true
+    }
+  }
+
+ 
+
+  const readString=(event)=>{
+    event.preventDefault()
+    setNewName(event.target.value)
+    console.log("nimi readstringissä: "+newName+ " ja target value: "+event.target.value)
+  }
+
+  const readPuh=(event)=>{
+    event.preventDefault()
+    setNewPuh(event.target.value)
+    console.log("nimi readPuh: "+newPuh+" ja target: "+event.target.value)
+
+  }
+  return (
+    <div>
+      <h2>Phonebook</h2>
+      <form>
+        <div>
+       
+        <div>Name: <input onChange={readString} /></div>
+        <div>number: <input onChange={readPuh}/></div>
+        </div>
+        <div>
+          <button type='submit' onClick={handleNoteChange} >add</button>
+          
+        </div>
+      </form>
+      <h2>Numbers</h2>   
+      {persons.map(person=> <div>{person.name} {person.puh}</div>)}
+    </div>
+  )
+
+}
+
+export default App

@@ -1,0 +1,55 @@
+import React, {useState } from 'react'
+
+const Statistics = (props) => {
+  if(props.positive===0&&props.neutral===0&&props.negative===0)
+  return(
+     <div>No feedback given</div>
+  )
+  else{
+    return(
+    <div>
+    <p>Positive: {props.positive}</p>
+    <p>Neutral: {props.neutral}</p>
+    <p>Negative: {props.negative}</p>
+    <p>All: {props.all} </p>
+    <p>Avarage: {props.avarage}</p>
+    <p>Positive%: {props.p} %</p>
+    
+    </div>
+    )
+  }
+}
+const App = (props) => {
+
+  const [good, setGood] = useState(0)
+  const [neutral, setNeutral] = useState(0)
+  const [bad, setBad] = useState(0)
+  
+  return (
+    <div>
+      <h1>Give feedback</h1>
+    
+      <button onClick={() => setGood(good +1 )}>
+        Good
+      </button>
+      <button onClick={() => setNeutral(neutral+1)}> 
+        Neutral
+      </button>
+      <button onClick={() => setBad(bad+1 )}> 
+        Bad
+      </button>
+      <h2>Statistics</h2>
+     
+      <div>
+        <Statistics positive={good} neutral={neutral} negative={bad} avarage={(good*1+neutral*0+bad*-1)/(good+neutral+bad)} all={good+neutral+bad} p={(good*1)/(good+neutral+bad)*100}/>
+
+   
+
+
+      </div>
+    </div>
+  )
+}
+
+
+export default App

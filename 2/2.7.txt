@@ -1,0 +1,71 @@
+import React, { useState } from 'react'
+
+const App = () => {
+  const [ persons, setPersons] = useState([
+    { name: 'Arto Hellas' }
+  ]) 
+
+  const [title, setTitle] = useState({name: ''})
+  const [ newName, setNewName ] = useState('')
+
+  const nameAlreadyExists = (persons, name) => {
+    return persons.filter(person => person.name === name).length > 0
+  }
+  const handleNoteChange = (event) => {
+    event.preventDefault()
+    console.log("Uusi nimi handle: "+newName)
+    persons.forEach(value => {
+         if(nameAlreadyExists(persons, newName)){
+         
+         }
+         else{
+           
+         setPersons(
+          [...persons, {name: newName}]    
+        )
+         }
+         
+    })  
+   
+  }
+
+ 
+
+  const readString=(event)=>{
+    event.preventDefault()
+    setNewName(event.target.value)
+    console.log("nimi readstringissä: "+newName+ " ja target value: "+event.target.value)
+  
+    
+    
+  
+  }
+
+  var a="moi"
+  var b="moi"
+  if(a===b){
+    console.log("Sama")
+  }
+  else{
+    console.log("Ei")
+  }
+  return (
+    <div>
+      <h2>Phonebook</h2>
+      <form>
+        <div>
+        <input onChange={readString} />
+        </div>
+        <div>
+          <button type='submit' onClick={handleNoteChange} >add</button>
+          
+        </div>
+      </form>
+      <h2>Numbers</h2>   
+      {persons.map(person=> <div>{person.name}</div>)}
+    </div>
+  )
+
+}
+
+export default App

@@ -1,0 +1,127 @@
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
+
+const App = () => {
+
+  
+  const Show=(value)=>{
+    setCity(value.capital)
+    setFlag(value.flag)
+
+    
+    setS(<div><h1>{value.name}</h1>population: {value.population} {value.languages.map(language=><li>{language.name}</li>)
+    
+    }{flag}</div>)
+   
+  }
+  const takeFilter=(event)=>{
+    event.preventDefault()
+     
+   
+    setFilter(event.target.value)
+    console.log("filteri: "+filter)
+  
+  
+   }
+   const [windspeed, setWindspeed]=useState('')
+   const [wimage, setWimage]=useState('')
+   const API='c537e8c61b1f94473e937e3b8df6f88c'
+   const [city, setCity]=useState('')
+   const[filter, setFilter]=useState('')
+  const [flag, setFlag]=useState()
+   const [s, setS]=useState(<div><h1></h1></div>)
+  const [notes, setNotes] = useState([])
+  const [newNote, setNewNote] = useState('')
+  const [showAll, setShowAll] = useState(true)
+  const[image, setImage]=useState()
+  const [weatherData, setWeatherData]=useState('')
+
+  useEffect(() => {
+    console.log('effect')
+    axios
+      .get('https://restcountries.eu/rest/v2/all')
+      .then(response => {
+        console.log('promise fulfilled')
+        setNotes(response.data)
+      })
+  }, [])
+  console.log('render', notes.length, 'notes')
+  const noteToShow=notes.filter(note=>note.name.includes(filter))
+  let a="hei"
+  if(noteToShow.length>10){
+     a=<div>Too many matches! Specify another filter</div>
+  }
+  else{
+
+    if(noteToShow.length===1){
+      a=noteToShow.map(note=><div>{note.name} {note.alpha2Code} capital: {note.capital} population: {note.population} <h1>Languages: </h1>{note.languages.map(language=><div> {language.name}</div>)} {note.flag}</div>) 
+    }
+
+    else{
+    
+      
+      a=noteToShow.map(note=><li>{note.name}  <button onClick={()=>Show(note)}>       click </button> </li> )  
+    
+  
+      
+    }
+  }
+
+  useEffect(() => {
+    console.log('effect')
+    axios
+      .get(flag)
+      .then(response => {
+        setImage(response.data)
+        
+      })
+  }, )
+
+
+  const data = { username: 'example' };
+
+  fetch('http://api.weatherstack.com/current?access_key=05f9a5a31d2e7e72d0ea85e6ab79c378&query=${city}', {
+  method: 'POST', // or 'PUT'
+  
+  body: JSON.stringify(data),
+})
+.then(response => response.json())
+.then(data => {
+  console.log('Success:', data.current.temperature);
+  setWeatherData(data.current.temperature)
+  setWimage(data.weather_icons)
+  setWindspeed(data.weather_descriptions.windspeed)
+  console.log("Tämä on windspeed: "+data.weather_descriptions.windspeed)
+})
+.catch((error) => {
+  console.error('Erroriaaaaa:', error);
+});
+ 
+
+ 
+  return (
+    
+    
+    <div>
+      <div>Filter shown with: <input onChange={takeFilter}/></div>
+    <h1>Countrys</h1>
+    
+    {a}
+    {s}
+    <img src={flag} />
+    <h1>Weather in {city} </h1>
+    Temperature: {weatherData}
+    wind speed: {windspeed}
+    {wimage}
+    
+    
+  </div>
+    
+    
+    
+  )
+    
+
+  // ...
+}
+export default App;
