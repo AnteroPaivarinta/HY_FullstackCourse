@@ -1,0 +1,148 @@
+const express = require('express')
+const app = express()
+
+
+app.use(express.json())
+
+let notes = [
+  {
+    id: 1,
+    name: "HTML is easy",
+    number: "2020-01-10T17:30:31.098Z",
+    
+  },
+  {
+    id: 2,
+    name: "M",
+    number: "2001-10T17:30:31.098Z",
+    
+  },
+  {
+    id: 3,
+    name: "A",
+    number: "2020-01-10T17:098Z",
+  }
+]
+const date=new Date("2019-08-02T11:30:00+10:00")
+let a=notes.length
+console.log(a)
+
+app.get('/', (req, res) => {
+  res.send('<h1>Hello World!</h1>')
+})
+
+app.get('/api/persons', (req, res) => {
+  res.json(notes)
+})
+
+
+
+
+
+
+app.get('/info', (req, res) => {
+  res.send(`<h1> There is ${a} persons. ${date.toString()}</h1>`)
+})
+
+
+
+
+
+  
+
+
+//...
+
+
+
+
+
+app.get('/api/persons/:id', (request, response) => {
+  let id = Number(request.params.id)
+  const note = notes.find(note => note.id === id)
+  
+  if (note) {
+    response.json(note)
+  } else {
+    response.status(404).end()
+  }
+})
+
+app.delete('/api/persons/:id', (request, response) => {
+  const id = Number(request.params.id)
+  notes = notes.filter(note => note.id !== id)
+
+  response.status(204).end()
+})
+
+app.post('/api/persons', (request, response) => {
+  const body = request.body
+  const l=Math.floor(Math.random() * 6) + 4;;
+  
+
+ 
+
+  let note = {
+    
+    
+    id: l,
+    name: "axxx",
+    
+  }
+  let t=false
+  let i=0;
+  for(;i<notes.length;i++){
+    console.log("OK "+l)
+    if(notes[i]===l){
+      t=false;
+      console.log("TÄHÄ")
+      break;
+    }
+    else{
+      console.log("ELSEEN MENTIIIN!!")
+      if(typeof note.name==='undefined'||typeof note.number==='undefined'){
+        console.log("Else osion if "+note.number)
+        t=false;
+        break;
+
+       
+        
+      }
+      else{
+        console.log("Else osion else")
+        console.log("Else osion else "+note.number)
+        notes=notes.concat(note)
+        t=true;
+        break;
+      }
+      
+    
+    }
+  }
+  if(t===false){
+    return response.status(400).json({ 
+      error: 'name or number missing' 
+    })
+  }
+  else{
+
+  console.log(notes.length+" JOO")
+  response.json(notes)
+  }
+
+  
+})
+
+
+
+
+
+
+
+
+const PORT = 3001
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`)
+})
+
+
